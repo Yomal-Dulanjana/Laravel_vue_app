@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\BookController;
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -12,7 +15,14 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+//Home Controller
+Route::get('/', [HomeController::class, "index"]) ->name('home');
 
-Route::get('/', function () {
-    return view('welcome');
+//book Controller
+Route::prefix('/book')->group(function (){
+    Route::get('/', [BookController::class, "index"]) ->name('book');
+    Route::post('/store', [BookController::class, "index"]) ->name('book');
+    Route::get('/book', [BookController::class, "index"]) ->name('book');
+    Route::get('/book', [BookController::class, "index"]) ->name('book');
 });
+
