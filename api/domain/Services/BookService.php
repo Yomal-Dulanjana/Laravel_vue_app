@@ -3,9 +3,10 @@
 namespace domain\Services;
 use App\Models\Book;
 
-class BoolService
-{
+Class BookService{
+
     protected $book;
+
     public function __construct()
     {
         $this->book = new Book();
