@@ -9,6 +9,7 @@
         <form action="{{ route('book-store') }}" method="POST" enctype="multipart/form">
             @csrf
             <div class="col-lg-12">
+              <div class="row">
                 <div class="from-group">
                     <div class="mb-3">
                         <label class="form-label">TITLE</label>
@@ -25,13 +26,14 @@
                       <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
             </div>
+          </div>
         </form>
         
         <div class="col-lg-12">
             <table class="table table-success table-striped">
                 <thead>
                   <tr>
-                    <th scope="col">#</th>
+                    <th scope="col">Id</th>
                     <th scope="col">Title</th>
                     <th scope="col">Description</th>
                     <th scope="col">Type</th>
@@ -42,7 +44,8 @@
                 <tbody>
                     @foreach ($books as $key => $book )
                   <tr>
-                    <th scope="row">{{  ++$key }}</th>
+                    {{-- <th scope="row">{{  ++$key }}</th> --}}
+                    <td>{{ $book->id }}</td>
                     <td>{{ $book->title }}</td>
                     <td>{{ $book->Description }}</td>
                     <td>
@@ -54,9 +57,9 @@
                     </td>
                     <td>{{ $book->price }}</td>
                     <td>
-                        <a href="{{ route('book-delete',$book->id) }}" class="btn btn-danger"><i class="fa-solid fa-eraser"></i></a>
-                        <a href="{{ route('book-type',$book->id) }}" class="btn btn-success"><i class="fa-solid fa-eraser"></i></a> 
-                        <a href="javascript:void(0)" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#bookedit"><i class="fa-solid fa-eraser"></i></a> 
+                        <a href="{{ route('book-delete',$book->id) }}" class="btn btn-danger">Delete</a>
+                        <a href="{{ route('book-type',$book->id) }}" class="btn btn-success">Change</a> 
+                        <a href="javascript:void(0)" class="btn btn-info" onclick="bookEditModal({{ $book->id }})">Update</a> 
 
                     </td>
                   </tr>
@@ -68,14 +71,14 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="bookedit" tabindex="-1" aria-labelledby="bookeditLabel" aria-hidden="true">
+<div class="modal fade" id="bookEdit" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="bookeditLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="bookeditLabel">UPDATE BOOK DATA</h1>
+          <h1 class="modal-title fs-5" id="bookEditLabel">UPDATE BOOK DATA</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body" id="bookeditcontent">
+        <div class="modal-body" id="bookEditContent">
           
         </div>
       </div>
@@ -96,16 +99,26 @@
     
 @endpush
 
-{{-- @push('js')
+@push('js')
 <script>
     function bookEditModal(book_id){
-        var book ={
+        var data = {
             book_id: book_id,
         };
         $.ajax ({
-            url: "{{ route }}"
-        })
+            url: "{{ route('book-edit') }}",
+            headers:{
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            type: 'GET',
+            datatype:'',
+            data: data,
+            success: function(response){
+                $('#bookEdit').modal('show');
+                $('#bookEditContent').html(response);
+            }
+        });
         }
 </script>
     
-@endpush --}}
+@endpush

@@ -22,8 +22,8 @@ Route::get('/', [HomeController::class, "index"]) ->name('home');
 Route::prefix('/book')->group(function (){
     Route::get('/', [BookController::class, "index"]) ->name('book');
     Route::post('/store', [BookController::class, "store"]) ->name('book-store');
-    Route::get('/{book_id}/show', [BookController::class, "edit"]) ->name('show');
-    Route::put('/{book_id}/update', [BookController::class, "update"]) ->name('book-update');
+    Route::get('/edit', [BookController::class, "edit"]) ->name('book-edit');
+    Route::post('/{book_id}/update', [BookController::class, "update"]) ->name('book-update');
     Route::get('/{book_id}/delete', [BookController::class, "delete"]) ->name('book-delete');
     Route::get('/{book_id}/type', [BookController::class, "type"]) ->name('book-type');
 });
