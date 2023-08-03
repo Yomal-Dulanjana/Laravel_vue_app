@@ -12,6 +12,11 @@ Class BookService{
         $this->book = new Book();
     }
 
+    public function get($book_id)
+    {
+        return $this->book->find($book_id);
+    }
+
     public function all()
     {
         return $this->book->all();
@@ -37,4 +42,14 @@ Class BookService{
         $book->update();
     }
 
+    public function update(array $data, $book_id)
+    {
+        $book = $this->book->find($book_id);
+        $book->update($this->edit($book, $data));
+    }
+
+    protected function edit(Book $book, $data)
+    {
+        return array_merge($book->toArray(), $data);
+    }
 }
